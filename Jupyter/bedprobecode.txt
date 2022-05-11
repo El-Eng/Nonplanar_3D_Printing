@@ -1,0 +1,69 @@
+import re
+import math
+import numpy as np
+
+def arrayToFile(path, data):
+    with open(path, "w") as txt_file:
+        for line in data:
+            txt_file.write(" ".join(line))
+
+#Input Values
+xLegnth = 1130
+yLegnth = 500
+
+xMargin = 0
+yMargin = 60
+
+xRobotBase=20 #nah chief
+yRobotBase=20 #nah chief
+
+NumberOfPoints = 50 #approx
+
+zHeightRest = 50
+zHeightProbe = 20
+
+baseCentreOffsetX=0
+baseCentreOffsetY=yRobotBase+(yLegnth/2)+(yRobotBase/2)
+
+
+#CaulcationOfProbePoints
+xStartPos = baseCentreOffsetX + (-(xLegnth-xMargin)/2)
+xEndPos = baseCentreOffsetX + ( (xLegnth-xMargin)/2)
+
+yStartPos = baseCentreOffsetY + ( -(yLegnth-yMargin)/2)
+yEndPos = baseCentreOffsetY + ( (yLegnth-yMargin)/2)
+
+xTravel = abs(xStartPos) + abs(xEndPos)
+yTravel = abs(yStartPos) + abs(yEndPos)
+
+xyRatio=xTravel/yTravel
+xProbePointNumber = NumberOfPoints/(1+xyRatio)
+yProbePointNumber = NumberOfPoints/(1+(1/xyRatio))
+
+x=xStartPos
+y=yStartPos
+
+z1=zHeightRest
+z2=zHeightProbe
+
+#IteratingThroughPoints
+#array = np.empty((int(xProbePointNumber*yProbePointNumber)))
+array = ['0'] * int(xProbePointNumber*yProbePointNumber)
+#array = 
+i = 0
+while (x<xEndPos):
+    while (y<yEndPos):
+        X = format((x),".3f")
+        Y = format((y),".3f")
+        Z1 = format((z1),".3f")
+        Z2 = format((z2),".3f")
+        newString = "G1 X{} Y{} Z{} \nG1 X{} Y{} Z{} \nG1 X{} Y{} Z{} \n".format(X, Y, Z1, X, Y, Z2, X, Y, Z1)
+        print(newString)
+        print(type(newString))
+        array[i]=[newString]
+        i+=1
+        y+=(yTravel/yProbePointNumber)
+    x+=(xTravel/xProbePointNumber)
+    y=yStartPos
+arrayToFile("BedProbe.gcode", array)
+

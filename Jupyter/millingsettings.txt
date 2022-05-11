@@ -1,0 +1,19 @@
+ANOUT 0.75
+
+130 inches min
+55mm/s
+
+M03 
+
+M_RunCode(%1)
+M_RunCode(%3)
+
+
+If %1 = 3 then
+    $ANOUT[1] = 0.75
+    WAIT SEC 1
+    $OUT[94] = TRUE
+    WAIT SEC 8
+Elseif %1 = 5 then
+    $OUT[94] = FALSE
+    $ANOUT[1] = 0
