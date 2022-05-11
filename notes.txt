@@ -1,0 +1,10 @@
+https://github.com/Zip-o-mat/Slic3r/tree/nonplanar
+
+startup:
+
+cd
+cd Slic3r/build
+export DISPLAY=localhost:0
+mwm&
+cd ..
+perl slic3r.pl --gui
